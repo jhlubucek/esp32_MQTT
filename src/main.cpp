@@ -15,7 +15,7 @@ void setup() {
   Serial.begin(9600);
 
   pinMode(MODE_PIN, INPUT);
-  if (digitalRead(MODE_PIN) == HIGH)
+  if (false && digitalRead(MODE_PIN) == HIGH)
   {
     pinMode(LED_SETUP, OUTPUT);
     digitalWrite(LED_SETUP, HIGH);
@@ -35,8 +35,9 @@ void setup() {
   pinMode (2, OUTPUT);
 }
 void loop() {
-    digitalWrite(2, HIGH);
-    delay(1000);
-    digitalWrite(2, LOW);
-    delay(1000);
+  digitalWrite(2, HIGH);
+  delay(1000);
+  digitalWrite(2, LOW);
+  delay(1000);
+  connectionService.publishData("/test/topic", "test");
 }

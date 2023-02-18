@@ -1,5 +1,5 @@
 #include <Arduino.h>
-#include "config.h"
+#include "include/config.h"
 #include "WiFi.h"
 #include "PubSubClient.h"
 #include "include/helper.h"
@@ -20,9 +20,9 @@ EpromService epromService;
 WiFiClient espClient;
 PubSubClient client(espClient);
 
-const char* mqtt_user = "........";
-const char* mqtt_password = "........";
-const char* mqtt_server = "broker.mqtt-dashboard.com";
+const char* mqtt_user = "mqtt-user";
+const char* mqtt_password = "kokos123";
+const char* mqtt_server = "192.168.2.233";
 
 ConnectionService::ConnectionService()
 {
@@ -30,7 +30,7 @@ ConnectionService::ConnectionService()
 
 void ConnectionService::start(){
     reconnectWifi();
-    client.setServer(mqtt_server, 1883);
+    client.setServer(MQTT_SERVER, 1883);
   //client.setCallback(callback); //set for subscribeing
     reconnectMqtt();
 }
@@ -52,9 +52,13 @@ void ConnectionService::loadFromEprom() {
 
 void ConnectionService::reconnectWifi() {
 
+  Serial.println("SSID");
+  Serial.println(ssid);
+  Serial.println("PASSWD");
+  Serial.println(pass);
   if (WiFi.status() != WL_CONNECTED) {
     WiFi.mode(WIFI_STA);
-    WiFi.begin(ssid, pass);
+    WiFi.begin(WIFI_SSID, WIFI_PASSWD);
 
     int counter = 0;
     while (WiFi.status() != WL_CONNECTED && counter < 60) {
@@ -69,6 +73,7 @@ void ConnectionService::reconnectWifi() {
     Serial.println("WiFi failed");
   } else {
     err -= err == 1 || err == 3 ? 1 : 0;
+    Serial.println("WiFi connected");
   }
 
   randomSeed(micros());
@@ -126,7 +131,7 @@ void ConnectionService::reconnectMqtt() {
       counter ++;
       clientId += String(random(0xffff), HEX);
       // Attempt to connect
-      if (client.connect(clientId.c_str(), mqtt_user, mqtt_password)) {
+      if (client.connect(clientId.c_str(), MQTT_USER, MQTT_PASSWD)) {
         //client.subscribe(waterPumpTopic);
         //subscribe
       } else {
@@ -141,8 +146,10 @@ void ConnectionService::reconnectMqtt() {
 
   if (!client.connected()){
     err += err == 0 || err == 1 ? 2 : 0;
+    Serial.println("MQTT failsed");
   }else{
     err -= err == 2 || err == 3 ? 2 : 0;
+    Serial.println("MQTT connected");
   }
       
 }

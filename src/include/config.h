@@ -1,8 +1,12 @@
 
 //MQTT broker
-#define MQTT_SERVER "192.168.1.166"
-#define MQTT_USER "test"
-#define MQTT_PASSWD  "raspberry"
+#define MQTT_SERVER "192.168.2.233"
+#define MQTT_USER "mqtt-user"
+#define MQTT_PASSWD  "kokos123"
+
+//WIFI
+#define WIFI_SSID "Kanal69"
+#define WIFI_PASSWD "00420603435309"
 
 //setup LED
 #define LED_SETUP 2
