@@ -4,6 +4,9 @@
 #define MQTT_USER "test"
 #define MQTT_PASSWD  "raspberry"
 
+//setup LED
+#define LED_SETUP 2
+
 //updates every Nth minute
 #define UPDATE_INTERVAL 1
 

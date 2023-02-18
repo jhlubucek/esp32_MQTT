@@ -76,11 +76,6 @@ void ConnectionService::reconnectWifi() {
 
 //loads values from serial port and saves them to eprom
 void ConnectionService::setupThroughSerial() {
-  pinMode(led, OUTPUT);
-  digitalWrite(led, HIGH);
-
-  delay(10000);
-
   Serial.println();
   Serial.print("Enter your WiFi credentials.\n (do not fill to retain old value)\n");
 
@@ -119,10 +114,6 @@ void ConnectionService::setupThroughSerial() {
   }
   Serial.println();
   Serial.println(counter < 30 ? "wifi connected sucessfuly!" : "wifi did NOT connect sucessfuly!!!");
-
-  while (true) {
-    //wait for restart
-  }
 }
 
 void ConnectionService::reconnectMqtt() {
