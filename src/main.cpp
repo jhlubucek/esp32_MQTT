@@ -3,10 +3,13 @@
 #include "WiFi.h"
 #include "PubSubClient.h"
 #include "include/ConnectionService.h"
+#include "DHT.h"
 
 
 char eRead[40];
 ConnectionService connectionService;
+DHT dht(DHTPIN, DHTTYPE);
+char buffer[64];
 
 
 
@@ -39,5 +42,6 @@ void loop() {
   delay(1000);
   digitalWrite(2, LOW);
   delay(1000);
-  connectionService.publishData("/test/topic", "test");
+  connectionService.publishData("/test/topic", String(dht.readTemperature()).c_str());
+  Serial.println(dht.readTemperature());
 }
