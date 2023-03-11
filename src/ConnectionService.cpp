@@ -131,7 +131,7 @@ void ConnectionService::reconnectMqtt() {
       counter ++;
       clientId += String(random(0xffff), HEX);
       // Attempt to connect
-      if (client.connect(clientId.c_str(), MQTT_USER, MQTT_PASSWD)) {
+      if (client.connect(clientId.c_str())) {//, MQTT_USER, MQTT_PASSWD)) {
         //client.subscribe(waterPumpTopic);
         //subscribe
       } else {
