@@ -11,7 +11,7 @@ public:
     void reconnectWifi();
     void reconnectMqtt();
     void setupThroughSerial();
-    void start();
+    void connect();
     void publishData(const char* topic, const char* payload);
 private:
     int err = 0; //wifi:1  MQTT:2

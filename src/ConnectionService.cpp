@@ -26,11 +26,12 @@ const char* mqtt_server = "192.168.2.233";
 
 ConnectionService::ConnectionService()
 {
+  client.setServer(MQTT_SERVER, 1883);
 }
 
-void ConnectionService::start(){
+void ConnectionService::connect(){
+    
     reconnectWifi();
-    client.setServer(MQTT_SERVER, 1883);
   //client.setCallback(callback); //set for subscribeing
     reconnectMqtt();
 }
@@ -131,7 +132,7 @@ void ConnectionService::reconnectMqtt() {
       counter ++;
       clientId += String(random(0xffff), HEX);
       // Attempt to connect
-      if (client.connect(clientId.c_str())) {//, MQTT_USER, MQTT_PASSWD)) {
+      if (client.connect(clientId.c_str(), MQTT_USER, MQTT_PASSWD)) {
         //client.subscribe(waterPumpTopic);
         //subscribe
       } else {

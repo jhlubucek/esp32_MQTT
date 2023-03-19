@@ -3,6 +3,7 @@
 #include "WiFi.h"
 #include "PubSubClient.h"
 #include "include/ConnectionService.h"
+#include "include/MQ9.h"
 #include "DHT.h"
 
 
@@ -10,6 +11,7 @@ char eRead[40];
 ConnectionService connectionService;
 DHT dht(DHTPIN, DHTTYPE);
 char buffer[64];
+MQ9 mq9(35, 2.55);
 
 
 
@@ -35,23 +37,35 @@ void setup() {
   }
 
   connectionService.loadFromEprom();
-  connectionService.start();
+  connectionService.connect();
 
   pinMode (2, OUTPUT);
 }
 void loop() {
-  digitalWrite(2, LOW);
-  delay(5000);
+  connectionService.connect();
   digitalWrite(2, HIGH);
-  delay(1000);
+  delay(300);
+  mq9.updateMesurements();
   int gassensorAnalog = analogRead(MQ2_SENSOR);
   int firesensorAnalog = analogRead(MQ135_SENSOR);
   connectionService.publishData("/jhlubucek/sensor/temp", String(dht.readTemperature()).c_str());
-  //Serial.println(dht.readTemperature());
-  Serial.print("Gas Sensor: ");
-  Serial.print(gassensorAnalog);
-   Serial.print("Fire Sensor: ");
-  Serial.print(firesensorAnalog);
-  connectionService.publishData("/jhlubucek/sensor/gass", String(gassensorAnalog).c_str());
-  connectionService.publishData("/jhlubucek/sensor/fire", String(firesensorAnalog).c_str());
+  connectionService.publishData("/jhlubucek/sensor/co2", String(mq9.getPpm()).c_str());
+  connectionService.publishData("/jhlubucek/sensor/volt", String(mq9.getSensorVolt()).c_str());
+  connectionService.publishData("/jhlubucek/sensor/value", String(mq9.getSensorValue()).c_str());
+  connectionService.publishData("/jhlubucek/sensor/ratio", String(mq9.getRatio()).c_str());
+
+
+  Serial.print("Priblizna koncentrace CO: ");
+  Serial.print(mq9.getPpm());
+  Serial.println(" ppm.");
+  Serial.print("ratio: ");
+  Serial.println(mq9.getRatio());
+  Serial.print("value: ");
+  Serial.println(mq9.getSensorValue());
+  Serial.print("volt: ");
+  Serial.println(mq9.getSensorVolt());
+  Serial.println();
+
+  digitalWrite(2, LOW);
+  delay(60000);
 }

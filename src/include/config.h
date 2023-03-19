@@ -1,6 +1,7 @@
 
 //MQTT broker
-#define MQTT_SERVER "broker.hivemq.com"//"192.168.2.233"
+//#define MQTT_SERVER "broker.hivemq.com"//"192.168.2.233"
+#define MQTT_SERVER "192.168.2.233"
 #define MQTT_USER "mqtt-user"
 #define MQTT_PASSWD  "kokos123"
 
@@ -26,6 +27,7 @@
 
 #define MQ2_SENSOR 35
 #define MQ135_SENSOR 32
+#define MQ135_R0 20
 
 //lightsensor
 #define LIGHT_SENSOR_PIN 34
